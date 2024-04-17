@@ -1,6 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cqaaq_app/index.dart';
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+
+/// [FirebaseStorage] instance
+final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
 class UserRepo {
   static final UserRepo _instance = UserRepo();
@@ -54,6 +60,7 @@ class UserRepo {
         email: email,
         password: password,
       );
+      logger.d("User: ${userCredential.user}");
       return userCredential.user;
     } catch (e) {
       logger.e("Error signing in with email and password: $e");
@@ -160,20 +167,23 @@ class UserRepo {
   }
 
   /// get user data from firebase
-  Future<UserModel> getUserData() async {
+  Future<UserModel?> getUserData() async {
     try {
       final User? user = _auth.currentUser;
       final Map<String, dynamic>? userData = await _firebaseCaller.getData(
         path: FirestorePaths.userDocument(user!.uid),
         builder: (Map<String, dynamic>? data, String? documentId) {
           if (data != null) {
-            // logger.i("User data: $data");
+            logger.i("User data: $data");
             return data;
           }
           return null;
         },
       );
-      UserModel userDataModel = UserModel.fromJson(userData!);
+      if (userData == null) {
+        return null;
+      }
+      UserModel userDataModel = UserModel.fromJson(userData);
       return userDataModel;
     } catch (e) {
       logger.e("Error getting user data: $e");
@@ -192,7 +202,7 @@ class UserRepo {
             for (QueryDocumentSnapshot<Map<String, dynamic>> document in data) {
               Map<String, dynamic> dataObject = document.data();
               UserModel userModel = UserModel.fromJson(dataObject);
-              // logger.i('User >>>> ::: ${userModel.toJson()}');
+              logger.i('User >>>> ::: ${userModel.toJson()}');
               users.add(userModel);
             }
             return users;
@@ -231,6 +241,31 @@ class UserRepo {
     } catch (e) {
       logger.e("Error deleting user data: $e");
       rethrow;
+    }
+  }
+
+  /// upload image with [File] to [FirebaseStorage] with filepath [image]
+  Future<String> uploadImageWithFile(File image, {String folderName = 'images'}) async {
+    try {
+      final String fileName = image.path.split('/').last;
+      final Reference ref = _firebaseStorage.ref().child('$folderName/$fileName');
+      final UploadTask uploadTask = ref.putFile(image);
+      final TaskSnapshot taskSnapshot = await uploadTask;
+      final String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      return '';
+    }
+  }
+
+  /// delete image from [FirebaseStorage] with filepath [image]
+  Future<void> deleteImage(String image, {String folderName = 'images'}) async {
+    try {
+      final String fileName = image.split('/').last;
+      final Reference ref = _firebaseStorage.ref().child('$folderName/$fileName');
+      await ref.delete();
+    } catch (e) {
+      logger.e("Error deleting image: $e");
     }
   }
 }

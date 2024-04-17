@@ -30,7 +30,10 @@ class _ProfileScreenState extends State<StatefulWidget> {
           onClick: () {
             NavigationService.navigateTo(
               navigationMethod: NavigationMethod.push,
-              page: () => BioDataScreen(user: userController.user),
+              page: () => BioDataScreen(
+                user: userController.user,
+                isEditting: true,
+              ),
               isNamed: false,
             );
           },
@@ -67,18 +70,18 @@ class _ProfileScreenState extends State<StatefulWidget> {
             );
           },
         ),
-        ProfileOptionModel.arrow(
-          title: 'Donate',
-          icon: Icon(
-            LineAwesomeIcons.credit_card,
-            size: 20,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-          titleColor: Theme.of(context).colorScheme.onBackground,
-          onClick: () {
-            // Navigator.pushNamed(context, DonationScreen.id);
-          },
-        ),
+        // ProfileOptionModel.arrow(
+        //   title: 'Donate',
+        //   icon: Icon(
+        //     LineAwesomeIcons.credit_card,
+        //     size: 20,
+        //     color: Theme.of(context).colorScheme.primary,
+        //   ),
+        //   titleColor: Theme.of(context).colorScheme.onBackground,
+        //   onClick: () {
+        //     // Navigator.pushNamed(context, DonationScreen.id);
+        //   },
+        // ),
         ProfileOptionModel.arrow(
           title: 'Settings',
           icon: Icon(
@@ -105,6 +108,7 @@ class _ProfileScreenState extends State<StatefulWidget> {
           titleColor: Theme.of(context).colorScheme.onBackground,
           onClick: () async {
             await userRepo.signOut();
+            userController.initUser();
             if (!mounted) return;
             NavigationService.offAll(
               page: HomeScreen.id,
@@ -128,6 +132,7 @@ class _ProfileScreenState extends State<StatefulWidget> {
                 context: context,
                 message: response,
               );
+              return;
             }
             NavigationService.offAll(
               page: HomeScreen.id,
@@ -218,7 +223,11 @@ class _ProfileScreenState extends State<StatefulWidget> {
                                     alignment: Alignment.bottomRight,
                                     child: InkWell(
                                       onTap: () {
-                                        // Navigator.of(context).pushNamed(NewProfilePictureScreen.id);
+                                        NavigationService.navigateTo(
+                                          navigationMethod: NavigationMethod.push,
+                                          page: NewProfilePictureScreen.id,
+                                          isNamed: true,
+                                        );
                                       },
                                       child: Container(
                                         padding: const EdgeInsets.all(4.0),

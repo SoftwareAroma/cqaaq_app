@@ -206,36 +206,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   _registerLogic() async {
-    // if form is not filled return
-    if (!(_formKey.currentState!.saveAndValidate())) {
-      showCustomFlushBar(
-        context: context,
-        message: "Please provide all required fields",
-      );
-      return;
-    }
     _checkInternet();
     showLoading(context);
-    final email = _formKey.currentState!.fields['email']!.value as String;
-    final password = _formKey.currentState!.fields['password']!.value as String;
-    showLoading(context);
-    // call the register method from the auth repo
-    User? user = await userRepo.signUpWithEmailAndPassword(email.trim(), password);
-    if (!mounted) return;
-    Navigator.of(context).pop();
-    if (user == null) {
+    try {
+      // if form is not filled return
+      if (!(_formKey.currentState!.saveAndValidate())) {
+        Navigator.of(context).pop();
+        showCustomFlushBar(
+          context: context,
+          message: "Please provide all required fields",
+        );
+        return;
+      }
+      final email = _formKey.currentState!.fields['email']!.value as String;
+      final password = _formKey.currentState!.fields['password']!.value as String;
+      showLoading(context);
+      // call the register method from the auth repo
+      User? user = await userRepo.signUpWithEmailAndPassword(email.trim(), password);
+      if (!mounted) return;
+      Navigator.of(context).pop();
+      if (user == null) {
+        showCustomFlushBar(
+          context: context,
+          message: "Invalid email or password",
+          icon: LineAwesomeIcons.exclamation_circle,
+          iconColor: Theme.of(context).colorScheme.error,
+        );
+        return;
+      }
+      NavigationService.navigateTo(
+        navigationMethod: NavigationMethod.push,
+        page: () => BioDataScreen(email: email),
+        isNamed: false,
+      );
+    } catch (e) {
+      Navigator.of(context).pop();
+      logger.e("Error signing up: $e");
+      // remove [**] and return the error message
+      String errorMessage = e.toString().replaceAll(RegExp(r'\[.*\]'), '');
       showCustomFlushBar(
         context: context,
-        message: "Invalid email or password",
+        message: errorMessage,
         icon: LineAwesomeIcons.exclamation_circle,
         iconColor: Theme.of(context).colorScheme.error,
       );
-      return;
     }
-    NavigationService.navigateTo(
-      navigationMethod: NavigationMethod.push,
-      page: () => BioDataScreen(email: email),
-      isNamed: false,
-    );
   }
 }

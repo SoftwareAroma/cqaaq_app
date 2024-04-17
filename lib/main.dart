@@ -102,6 +102,7 @@ class MyApp extends StatelessWidget {
                     SettingsScreen.id: (BuildContext context) => const SettingsScreen(),
                     ProfileScreen.id: (BuildContext context) => const ProfileScreen(),
                     NewsUpdateScreen.id: (BuildContext context) => const NewsUpdateScreen(),
+                    NewProfilePictureScreen.id: (BuildContext context) => const NewProfilePictureScreen(),
                   },
                 );
               },

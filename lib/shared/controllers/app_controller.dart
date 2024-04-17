@@ -37,7 +37,7 @@ class AppController extends GetxController {
 
   fetchUsers() async {
     List<UserModel> users = await userRepo.getUsers();
-    // logger.i("users >>> $users");
+    logger.i("users >>> $users");
     updateUsers(users);
   }
 

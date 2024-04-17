@@ -17,11 +17,13 @@ class BioDataScreen extends StatefulWidget {
   final UserModel? user;
   final String? email;
   final String? phone;
+  final bool isEditting;
   const BioDataScreen({
     super.key,
     this.user,
     this.email,
     this.phone,
+    this.isEditting = false,
   });
 
   @override
@@ -37,25 +39,31 @@ class _BioDataScreenState extends State<BioDataScreen> {
 
   @override
   void initState() {
-    if (widget.email != null) {
-      _formKey.currentState?.fields["email"]?.didChange(widget.email);
-    }
-    if (widget.phone != null) {
-      _formKey.currentState?.fields["phone"]?.didChange(widget.phone);
-    }
-    if (widget.user != null) {
-      _formKey.currentState?.fields["first_name"]?.didChange(widget.user?.firstName);
-      _formKey.currentState?.fields["last_name"]?.didChange(widget.user?.lastName);
-      _formKey.currentState?.fields["other_name"]?.didChange(widget.user?.otherName);
-      _formKey.currentState?.fields["phone"]?.didChange(widget.user?.phone);
-      _formKey.currentState?.fields["region"]?.didChange(widget.user?.region);
-    }
+    appController.fetchUsers();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.email != null) {
+        _formKey.currentState?.fields["email"]?.didChange(widget.email);
+      }
+      if (widget.phone != null) {
+        _formKey.currentState?.fields["phone"]?.didChange(widget.phone);
+      }
+      if (widget.user != null) {
+        _formKey.currentState?.fields["email"]?.didChange(widget.user?.email);
+        _formKey.currentState?.fields["first_name"]?.didChange(widget.user?.firstName);
+        _formKey.currentState?.fields["last_name"]?.didChange(widget.user?.lastName);
+        _formKey.currentState?.fields["other_name"]?.didChange(widget.user?.otherName);
+        _formKey.currentState?.fields["phone"]?.didChange(widget.user?.phone);
+        _formKey.currentState?.fields["region"]?.didChange(widget.user?.region);
+        _formKey.currentState?.fields["district"]?.didChange(widget.user?.district);
+        _formKey.currentState?.fields["position"]?.didChange(widget.user?.position);
+      }
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // logger.i("BioDataScreen: $email, $phone, $userModel");
+    // logger.i("BioDataScreen: ${widget.user}");
     // logger.i("BioDataScreen: ${widget.arguments}");
     return Scaffold(
       key: _scaffoldKey,
@@ -120,30 +128,33 @@ class _BioDataScreenState extends State<BioDataScreen> {
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
-                      if ((widget.user != null && widget.email == null) || (widget.email == null))
-                        FormBuilderTextField(
-                          name: "email",
-                          textInputAction: TextInputAction.next,
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: InputDecoration(
-                            labelText: "Email",
-                            prefixIcon: Icon(
-                              LineAwesomeIcons.envelope,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0.r),
-                              gapPadding: 5.0,
-                            ),
+                      FormBuilderTextField(
+                        name: "email",
+                        enabled: widget.isEditting ? false : true,
+                        textInputAction: TextInputAction.next,
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: "Email",
+                          prefixIcon: Icon(
+                            LineAwesomeIcons.envelope,
+                            color: widget.isEditting
+                                ? Theme.of(context).colorScheme.onBackground.withOpacity(
+                                      0.3,
+                                    )
+                                : Theme.of(context).colorScheme.primary,
                           ),
-                          validator: FormBuilderValidators.compose([
-                            FormBuilderValidators.email(),
-                          ]),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0.r),
+                            gapPadding: 5.0,
+                          ),
                         ),
-                      if ((widget.user != null && widget.email == null) || (widget.email == null)) Gap(15.0.h),
+                        validator: FormBuilderValidators.compose([
+                          FormBuilderValidators.email(),
+                        ]),
+                      ),
+                      if ((!widget.isEditting) || (widget.email == null)) Gap(15.0.h),
                       FormBuilderTextField(
                         name: "uid",
-                        enabled: false,
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.text,
                         initialValue: widget.user == null ? randomString() : widget.user?.uid,
@@ -151,9 +162,7 @@ class _BioDataScreenState extends State<BioDataScreen> {
                           labelText: "ID Number",
                           prefixIcon: Icon(
                             LineAwesomeIcons.user,
-                            color: Theme.of(context).colorScheme.onBackground.withOpacity(
-                                  0.3,
-                                ),
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0.r),
@@ -444,9 +453,11 @@ class _BioDataScreenState extends State<BioDataScreen> {
 }
 
 String randomString({int length = 7}) {
+  // get the length of users fro appcontroller
+  int userLength = appController.users.length;
   const String chars = '1234567890';
   Random rnd = Random.secure();
-  String value = String.fromCharCodes(
+  String _ = String.fromCharCodes(
     Iterable.generate(
       length,
       (_) => chars.codeUnitAt(
@@ -454,7 +465,18 @@ String randomString({int length = 7}) {
       ),
     ),
   );
+  String baseValue = '94321';
+  String uniqueId = '';
+  // if userLenght is a single digit, add two zeros infrot of it, if its a double digit add one zero infront of it, else add the userLength
+  if (userLength < 10) {
+    uniqueId = '00$userLength';
+  } else if (userLength > 10 && userLength < 100) {
+    uniqueId = '0$userLength';
+  } else {
+    uniqueId = '$userLength';
+  }
 
-  /// add CQAAQ-GH- infront of the generated code
-  return 'CQAAQ-GH-$value'; // example CQAAQ-GH-1234567
+  /// the format of id should be like GH-QC-9432-001 // only the 001 changes, it should be the length of the users + 1
+  String idNumber = 'GH-QC-$baseValue-$uniqueId';
+  return idNumber;
 }

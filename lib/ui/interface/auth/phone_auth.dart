@@ -463,7 +463,7 @@ class _PhoneAuthScreenState extends State<PhoneAuthScreen> {
           );
           showCustomFlushBar(
             context: context,
-            message: "Welcome back!",
+            message: "Welcome back",
           );
         }
       } else {

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -198,47 +199,71 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _loginLogic() async {
-    // hide all keyboard
-    FocusScope.of(context).unfocus();
-    // if form is not filled return
-    if (!(_formKey.currentState!.saveAndValidate())) {
-      showCustomFlushBar(
-        context: context,
-        message: "Please provide all required fields",
-      );
-      return;
-    }
+    /// check internet connection
     _checkInternet();
-    showLoading(context);
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final email = _formKey.currentState!.fields['email']!.value;
-    final password = _formKey.currentState!.fields['password']!.value;
-    // call the register method from the auth repo
-    User? firebaseUser = await userRepo.signInWithEmailAndPassword(email, password);
-    if (!mounted) return;
-    Navigator.of(context).pop();
-    if (firebaseUser == null) {
-      showCustomFlushBar(
-        context: context,
-        message: "Invalid email or password",
-        icon: LineAwesomeIcons.exclamation_circle,
-        iconColor: Theme.of(context).colorScheme.error,
-      );
-      return;
-    }
 
-    bool response = await userRepo.checkUserData(auth.currentUser!.uid);
-    if (!mounted) return;
-    if (!response) {
-      NavigationService.offAll(
-        page: BioDataScreen.id,
-        isNamed: true,
-      );
+    /// continue with the login
+    showLoading(context);
+    try {
+      // hide all keyboard
+      FocusScope.of(context).unfocus();
+      FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+      // if form is not filled return
+      if (!(_formKey.currentState!.saveAndValidate())) {
+        Navigator.of(context).pop();
+        showCustomFlushBar(
+          context: context,
+          message: "Please provide all required fields",
+        );
+        return;
+      }
+
+      String email = _formKey.currentState!.fields['email']!.value.toString();
+      String password = _formKey.currentState!.fields['password']!.value.toString();
+
+      User? response = await userRepo.signInWithEmailAndPassword(email, password);
+      if (!mounted) return;
+      if (response == null) {
+        Navigator.of(context).pop();
+        showCustomFlushBar(
+          context: context,
+          message: "Invalid email or password",
+          icon: LineAwesomeIcons.exclamation_circle,
+          iconColor: Theme.of(context).colorScheme.error,
+        );
+        return;
+      } else {
+        var userExist = await userRepo.checkUserData(firebaseAuth.currentUser!.uid);
+        if (!mounted) return;
+        if (userExist) {
+          NavigationService.offAll(
+            page: HomeScreen.id,
+            isNamed: true,
+          );
+          showCustomFlushBar(
+            context: context,
+            message: "Welcome back",
+            icon: LineAwesomeIcons.check_circle,
+            iconColor: Theme.of(context).colorScheme.onPrimary,
+          );
+        } else {
+          NavigationService.offAll(
+            page: () => BioDataScreen(email: email),
+            isNamed: false,
+          );
+          showCustomFlushBar(
+            context: context,
+            message: "Please Complete your profile",
+            icon: LineAwesomeIcons.check_circle,
+            iconColor: Theme.of(context).colorScheme.onPrimary,
+          );
+        }
+      }
+    } catch (e) {
+      Navigator.of(context).pop();
+      // remove [**] and return the error message
+      String error = e.toString().replaceAll(RegExp(r'\[.*\]'), '');
+      showCustomFlushBar(context: context, message: error);
     }
-    NavigationService.offAll(
-      page: HomeScreen.id,
-      isNamed: true,
-    );
-    showCustomFlushBar(context: context, message: "Welcome ${firebaseUser.displayName ?? ""}");
   }
 }

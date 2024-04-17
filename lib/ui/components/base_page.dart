@@ -91,6 +91,7 @@ class _BasePageState extends State<BasePage> {
                   children: <Widget>[
                     InkWell(
                       onTap: () {
+                        NavigationService.goBack();
                         NavigationService.navigateTo(
                           navigationMethod: NavigationMethod.push,
                           page: ProfileScreen.id,
@@ -199,6 +200,7 @@ class _BasePageState extends State<BasePage> {
                             title: StringResource.homeText,
                             icon: FontAwesomeIcons.house,
                             onTap: () {
+                              NavigationService.goBack();
                               NavigationService.navigateTo(
                                 navigationMethod: NavigationMethod.push,
                                 page: HomeScreen.id,
@@ -211,6 +213,7 @@ class _BasePageState extends State<BasePage> {
                             title: StringResource.reportText,
                             icon: FontAwesomeIcons.copy,
                             onTap: () {
+                              NavigationService.goBack();
                               NavigationService.navigateTo(
                                 navigationMethod: NavigationMethod.push,
                                 page: ReportScreen.id,
@@ -223,6 +226,7 @@ class _BasePageState extends State<BasePage> {
                             title: StringResource.settingsText,
                             icon: FontAwesomeIcons.gear,
                             onTap: () {
+                              NavigationService.goBack();
                               NavigationService.navigateTo(
                                 navigationMethod: NavigationMethod.push,
                                 page: SettingsScreen.id,
@@ -235,6 +239,7 @@ class _BasePageState extends State<BasePage> {
                             title: StringResource.profileText,
                             icon: FontAwesomeIcons.user,
                             onTap: () {
+                              NavigationService.goBack();
                               NavigationService.navigateTo(
                                 navigationMethod: NavigationMethod.push,
                                 page: ProfileScreen.id,
@@ -247,6 +252,7 @@ class _BasePageState extends State<BasePage> {
                             title: StringResource.notificationText,
                             icon: FontAwesomeIcons.bell,
                             onTap: () {
+                              NavigationService.goBack();
                               NavigationService.navigateTo(
                                 navigationMethod: NavigationMethod.push,
                                 page: NotificationScreen.id,
@@ -259,6 +265,7 @@ class _BasePageState extends State<BasePage> {
                             title: StringResource.newsUpdateText,
                             icon: FontAwesomeIcons.newspaper,
                             onTap: () {
+                              NavigationService.goBack();
                               NavigationService.navigateTo(
                                 navigationMethod: NavigationMethod.push,
                                 page: NewsUpdateScreen.id,
