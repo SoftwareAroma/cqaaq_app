@@ -38,23 +38,17 @@ class _BioDataScreenState extends State<BioDataScreen> {
   @override
   void initState() {
     if (widget.email != null) {
-      _formKey.currentState?.patchValue({
-        "email": widget.email,
-      });
+      _formKey.currentState?.fields["email"]?.didChange(widget.email);
     }
     if (widget.phone != null) {
-      _formKey.currentState?.patchValue({
-        "phone": widget.phone,
-      });
+      _formKey.currentState?.fields["phone"]?.didChange(widget.phone);
     }
     if (widget.user != null) {
-      _formKey.currentState?.patchValue({
-        "first_name": widget.user?.firstName,
-        "last_name": widget.user?.lastName,
-        "other_name": widget.user?.otherName,
-        "phone": widget.user?.phone,
-        "region": widget.user?.region,
-      });
+      _formKey.currentState?.fields["first_name"]?.didChange(widget.user?.firstName);
+      _formKey.currentState?.fields["last_name"]?.didChange(widget.user?.lastName);
+      _formKey.currentState?.fields["other_name"]?.didChange(widget.user?.otherName);
+      _formKey.currentState?.fields["phone"]?.didChange(widget.user?.phone);
+      _formKey.currentState?.fields["region"]?.didChange(widget.user?.region);
     }
     super.initState();
   }
@@ -449,8 +443,8 @@ class _BioDataScreenState extends State<BioDataScreen> {
   }
 }
 
-String randomString({int length = 8}) {
-  const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+String randomString({int length = 7}) {
+  const String chars = '1234567890';
   Random rnd = Random.secure();
   String value = String.fromCharCodes(
     Iterable.generate(
@@ -462,5 +456,5 @@ String randomString({int length = 8}) {
   );
 
   /// add CQAAQ-GH- infront of the generated code
-  return 'CQAAQ-GH-$value';
+  return 'CQAAQ-GH-$value'; // example CQAAQ-GH-1234567
 }
