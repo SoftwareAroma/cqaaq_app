@@ -1,0 +1,41 @@
+class StringResource {
+  StringResource._();
+
+  static get appName => 'CQAAQ';
+  static get loginText => 'Login';
+  static get signUpText => 'Sign Up';
+  static get alreadyHaveAccount => 'Already have an account? ';
+  static get dontHaveAccount => 'Don\'t have an account? ';
+  static get emailHint => 'Email';
+  static get firstNameHint => 'First Name';
+  static get lastNameHint => 'Last Name';
+  static get otherNameHint => 'Other Name';
+  static get phoneNumberHint => 'Phone Number';
+  static get changePhoneNumberText => "Change Number";
+  static get getInTouchText => "GET IN TOUCH";
+  static get getInTouchMessage => "Get in touch with us";
+  static get submitText => 'Submit';
+  static get continueText => 'Continue';
+  static get unknownText => 'Unknown';
+  static get moiText => 'MOI';
+  static get siteText => 'SITE';
+  static get reportDateText => 'Report Date';
+  static get homeText => 'Home';
+  static get reportText => 'Report';
+  static get profileText => 'Profile';
+  static get newsUpdateText => 'News Updates';
+  static get reportDetailText => 'Report Details';
+  static get notificationText => 'Notifications';
+  static get settingsText => 'Settings';
+  static get noInternetConnection => 'No Internet Connection';
+  static get bioDataInfoTitle => 'Bio Data Information';
+  static get bioDataInfoText => 'To make things effective with the reports and cases that you are likely to file, ';
+  static get janeDoeEmail => 'janedoe@email.com';
+  static get janeDoe => 'Jane Doe';
+  static get janeDoeNumber => '+233 123 456 7890';
+  static get darkThemeText => 'Dark Mode';
+  static get lightThemeText => 'Light Mode';
+  static get registerText => 'Register';
+  static get noAccountYetRegisterText => 'Don\'t have an account yet? Register.';
+  static get alreadyHaveAccountLoginText => 'Already have an account? Login.';
+}

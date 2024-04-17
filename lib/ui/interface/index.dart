@@ -1,0 +1,9 @@
+export 'auth/index.dart';
+export 'error/index.dart';
+export 'home/index.dart';
+export 'main/index.dart';
+export 'news/index.dart';
+export 'notification/index.dart';
+export 'report/index.dart';
+export 'settings/index.dart';
+export 'user/index.dart';

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1041041643130",
+    "project_id": "cqaag-gh",
+    "storage_bucket": "cqaag-gh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1041041643130:android:bc120b8f5b2da927a98dc3",
+        "android_client_info": {
+          "package_name": "com.cqaaqgh.cqaaq_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1041041643130-kuo5njh0dvu96nbe54t6j6oischfg5mc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD71sRgAMvtRHGIxP4PxXvDA_ZMT5I3MU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1041041643130-kuo5njh0dvu96nbe54t6j6oischfg5mc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
