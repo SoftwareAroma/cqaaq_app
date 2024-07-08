@@ -62,7 +62,7 @@ class _ReportScreenState extends State<ReportScreen> {
     required double goodKernel,
   }) {
     // Calculate KOR using the provided formula
-    double kor = (immature + spotted + goodKernel) * 0.176;
+    double kor = (1 / 2 * (immature + spotted) + goodKernel) * 0.176;
     return kor;
   }
 
@@ -526,7 +526,7 @@ class _ReportScreenState extends State<ReportScreen> {
           "column4": updatedData[i].column4.isNotEmpty ? updatedData[i].column4 : "",
         });
       }
-      logger.i("DataGrid Data: $dataGridData");
+      // logger.i("DataGrid Data: $dataGridData");
 
       /// get form data
       Map<String, dynamic>? formData = _formKey.currentState?.value;
@@ -552,28 +552,28 @@ class _ReportScreenState extends State<ReportScreen> {
         "data": dataGridData,
       };
       logger.i("Report Object: $reportObject");
-      // String? response = await reportRepo.addReport(reportObject);
-      // if (!mounted) return;
-      // NavigationService.goBack();
-      // if (response == null) {
-      //   NavigationService.navigateTo(
-      //     navigationMethod: NavigationMethod.pushReplacement,
-      //     page: HomeScreen.id,
-      //     isNamed: true,
-      //   );
-      //   showCustomFlushBar(
-      //     context: context,
-      //     message: "Report submitted successfully",
-      //     icon: LineAwesomeIcons.check_circle,
-      //   );
-      // } else {
-      //   showCustomFlushBar(
-      //     context: context,
-      //     message: response,
-      //     icon: LineAwesomeIcons.exclamation_circle,
-      //     iconColor: Theme.of(context).colorScheme.error,
-      //   );
-      // }
+      String? response = await reportRepo.addReport(reportObject);
+      if (!mounted) return;
+      NavigationService.goBack();
+      if (response == null) {
+        NavigationService.navigateTo(
+          navigationMethod: NavigationMethod.pushReplacement,
+          page: HomeScreen.id,
+          isNamed: true,
+        );
+        showCustomFlushBar(
+          context: context,
+          message: "Report submitted successfully",
+          icon: LineAwesomeIcons.check_circle,
+        );
+      } else {
+        showCustomFlushBar(
+          context: context,
+          message: response,
+          icon: LineAwesomeIcons.exclamation_circle,
+          iconColor: Theme.of(context).colorScheme.error,
+        );
+      }
     } catch (e) {
       logger.e("Error: $e");
       NavigationService.goBack();
