@@ -32,6 +32,7 @@ class StringResource {
   static get bioDataInfoText => 'To make things effective with the reports and cases that you are likely to file, ';
   static get janeDoeEmail => 'janedoe@email.com';
   static get janeDoe => 'Jane Doe';
+  static get emptyText => '';
   static get janeDoeNumber => '+233 123 456 7890';
   static get darkThemeText => 'Dark Mode';
   static get lightThemeText => 'Light Mode';

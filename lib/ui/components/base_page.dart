@@ -16,6 +16,7 @@ class BasePage extends StatefulWidget {
   final String title;
   final Color? backgroundColor;
   final Widget? leading;
+  final Widget? fab;
   const BasePage({
     super.key,
     required this.body,
@@ -24,6 +25,7 @@ class BasePage extends StatefulWidget {
     this.title = "CQAAQ",
     this.backgroundColor,
     this.leading,
+    this.fab,
   });
 
   @override
@@ -43,6 +45,7 @@ class _BasePageState extends State<BasePage> {
       backgroundColor: widget.backgroundColor ?? Theme.of(context).colorScheme.background,
       extendBody: true,
       extendBodyBehindAppBar: true,
+      floatingActionButton: widget.fab,
       appBar: widget.showAppBar
           ? AppBar(
               backgroundColor: Theme.of(context).colorScheme.primary,
@@ -139,7 +142,7 @@ class _BasePageState extends State<BasePage> {
                                     ClipRRect(
                                       child: CustomText(
                                         userController.user?.firstName.toUpperCase() ??
-                                            StringResource.janeDoe.toUpperCase(),
+                                            StringResource.unknownText.toUpperCase(),
                                         fontSize: 16.0.sp,
                                         color: Theme.of(context).colorScheme.primary,
                                         maxLines: 3,
@@ -153,8 +156,7 @@ class _BasePageState extends State<BasePage> {
                                       children: <Widget>[
                                         ClipRRect(
                                           child: CustomText(
-                                            userController.user?.position?.toCapitalized() ??
-                                                StringResource.unknownText,
+                                            userController.user?.position?.toCapitalized() ?? StringResource.emptyText,
                                             fontSize: 10.0.sp,
                                             color: Theme.of(context).colorScheme.onBackground,
                                             maxLines: 3,
@@ -162,18 +164,18 @@ class _BasePageState extends State<BasePage> {
                                           ),
                                         ),
                                         Gap(4.0.w),
-                                        Container(
-                                          height: 10.0.h,
-                                          width: 2.0.h,
-                                          decoration: BoxDecoration(
-                                            color: Theme.of(context).colorScheme.primary,
+                                        if (userController.user?.position != null)
+                                          Container(
+                                            height: 10.0.h,
+                                            width: 2.0.h,
+                                            decoration: BoxDecoration(
+                                              color: Theme.of(context).colorScheme.primary,
+                                            ),
                                           ),
-                                        ),
                                         Gap(4.0.w),
                                         ClipRRect(
                                           child: CustomText(
-                                            userController.user?.district?.toCapitalized() ??
-                                                StringResource.unknownText,
+                                            userController.user?.district?.toCapitalized() ?? StringResource.emptyText,
                                             fontSize: 10.0.sp,
                                             color: Theme.of(context).colorScheme.onBackground,
                                             maxLines: 3,

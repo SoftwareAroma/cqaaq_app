@@ -54,10 +54,23 @@ class _ReportScreenState extends State<ReportScreen> {
     ReportRow(column1: '', column2: 'ANALYSER', column3: '', column4: ''),
   ];
 
+  double korValue = 0.0;
+
+  double calculateKor({
+    required double immature,
+    required double spotted,
+    required double goodKernel,
+  }) {
+    // Calculate KOR using the provided formula
+    double kor = (immature + spotted + goodKernel) * 0.176;
+    return kor;
+  }
+
   @override
   void initState() {
     _reportDataSource = ReportDataSource(_reportRows);
     _dataGridController = DataGridController();
+    korValue = calculateKor(immature: 0, spotted: 0, goodKernel: 0);
     super.initState();
   }
 
@@ -66,6 +79,27 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var imature = _reportDataSource.dataGridRows[2].getCells().toList()[3].value;
+    var spotted = _reportDataSource.dataGridRows[1].getCells().toList()[3].value;
+    var goodKernel = _reportDataSource.dataGridRows[10].getCells().toList()[3].value;
+    // logger.e("imature => $imature $spotted $goodKernel");
+    double res = calculateKor(
+      immature: double.tryParse(imature) ?? 0,
+      spotted: double.tryParse(spotted) ?? 0,
+      goodKernel: double.tryParse(goodKernel) ?? 0,
+    );
+    setState(() {
+      korValue = res;
+    });
+    // update the OVERALL OUTPUT (KOR7) of the data grid
+    var columnIndex = _reportDataSource.dataGridRows.indexWhere((DataGridRow dataGridRow) {
+      return dataGridRow.getCells().first.value == 'OVERALL OUTPUT (KOR7)';
+    });
+    _reportDataSource.dataGridRows[columnIndex].getCells()[3] = DataGridCell<String>(
+      columnName: 'column4',
+      value: res.toStringAsFixed(2),
+    );
+    // logger.e("Result => $res");
     return BasePage(
       title: StringResource.reportText,
       backgroundColor: Theme.of(context).colorScheme.background,
@@ -298,6 +332,10 @@ class _ReportScreenState extends State<ReportScreen> {
                         onQueryRowHeight: (RowHeightDetails details) {
                           return details.rowIndex == 0 ? 60.0.h : 80.0.h;
                         },
+                        onSelectionChanged: (addedRows, removedRows) {
+                          // update state
+                          setState(() {});
+                        },
                         columns: <GridColumn>[
                           GridColumn(
                             columnName: 'commodity',
@@ -447,7 +485,7 @@ class _ReportScreenState extends State<ReportScreen> {
   }
 
   _proceedAction() async {
-    showLoading(context);
+    // showLoading(context);
     try {
       /// check for internet connection
       _checkInternet();
@@ -488,7 +526,7 @@ class _ReportScreenState extends State<ReportScreen> {
           "column4": updatedData[i].column4.isNotEmpty ? updatedData[i].column4 : "",
         });
       }
-      // logger.i("DataGrid Data: $dataGridData");
+      logger.i("DataGrid Data: $dataGridData");
 
       /// get form data
       Map<String, dynamic>? formData = _formKey.currentState?.value;
@@ -513,29 +551,29 @@ class _ReportScreenState extends State<ReportScreen> {
         "grainage": grainage,
         "data": dataGridData,
       };
-      // logger.i("Report Object: $reportObject");
-      String? response = await reportRepo.addReport(reportObject);
-      if (!mounted) return;
-      NavigationService.goBack();
-      if (response == null) {
-        NavigationService.navigateTo(
-          navigationMethod: NavigationMethod.pushReplacement,
-          page: HomeScreen.id,
-          isNamed: true,
-        );
-        showCustomFlushBar(
-          context: context,
-          message: "Report submitted successfully",
-          icon: LineAwesomeIcons.check_circle,
-        );
-      } else {
-        showCustomFlushBar(
-          context: context,
-          message: response,
-          icon: LineAwesomeIcons.exclamation_circle,
-          iconColor: Theme.of(context).colorScheme.error,
-        );
-      }
+      logger.i("Report Object: $reportObject");
+      // String? response = await reportRepo.addReport(reportObject);
+      // if (!mounted) return;
+      // NavigationService.goBack();
+      // if (response == null) {
+      //   NavigationService.navigateTo(
+      //     navigationMethod: NavigationMethod.pushReplacement,
+      //     page: HomeScreen.id,
+      //     isNamed: true,
+      //   );
+      //   showCustomFlushBar(
+      //     context: context,
+      //     message: "Report submitted successfully",
+      //     icon: LineAwesomeIcons.check_circle,
+      //   );
+      // } else {
+      //   showCustomFlushBar(
+      //     context: context,
+      //     message: response,
+      //     icon: LineAwesomeIcons.exclamation_circle,
+      //     iconColor: Theme.of(context).colorScheme.error,
+      //   );
+      // }
     } catch (e) {
       logger.e("Error: $e");
       NavigationService.goBack();
