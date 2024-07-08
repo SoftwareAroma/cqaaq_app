@@ -70,18 +70,6 @@ class _ProfileScreenState extends State<StatefulWidget> {
             );
           },
         ),
-        // ProfileOptionModel.arrow(
-        //   title: 'Donate',
-        //   icon: Icon(
-        //     LineAwesomeIcons.credit_card,
-        //     size: 20,
-        //     color: Theme.of(context).colorScheme.primary,
-        //   ),
-        //   titleColor: Theme.of(context).colorScheme.onBackground,
-        //   onClick: () {
-        //     // Navigator.pushNamed(context, DonationScreen.id);
-        //   },
-        // ),
         ProfileOptionModel.arrow(
           title: 'Settings',
           icon: Icon(
@@ -91,10 +79,10 @@ class _ProfileScreenState extends State<StatefulWidget> {
           ),
           titleColor: Theme.of(context).colorScheme.onBackground,
           onClick: () {
-            pageController.animateToPage(
-              3,
-              duration: const Duration(milliseconds: 150),
-              curve: Curves.easeInOut,
+            NavigationService.navigateTo(
+              navigationMethod: NavigationMethod.push,
+              page: SettingsScreen.id,
+              isNamed: true,
             );
           },
         ),

@@ -60,6 +60,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   bottomLeft: Radius.circular(5.0.r),
                   bottomRight: Radius.circular(5.0.r),
                 ),
+                image: DecorationImage(
+                  image: const AssetImage(Assets.imagesAuthBackground),
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.95),
+                    BlendMode.overlay,
+                  ),
+                ),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     textAlign: TextAlign.center,
                     maxLines: 3,
                     fontWeight: FontWeight.w900,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    color: Theme.of(context).colorScheme.surface,
                   ),
                   _space,
                   CustomText(
@@ -80,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontSize: 14.0.sp,
                     maxLines: 10,
                     textAlign: TextAlign.center,
-                    color: Theme.of(context).colorScheme.onPrimaryContainer,
+                    color: Theme.of(context).colorScheme.surface,
                   ),
                 ],
               ),
