@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/material.dart';
 import 'package:cqaaq_app/index.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:gap/gap.dart';
@@ -219,6 +219,19 @@ class _BasePageState extends State<BasePage> {
                               NavigationService.navigateTo(
                                 navigationMethod: NavigationMethod.push,
                                 page: ReportScreen.id,
+                                isNamed: true,
+                              );
+                            },
+                          ),
+                          _space,
+                          DrawerTile(
+                            title: StringResource.memText,
+                            icon: FontAwesomeIcons.users,
+                            onTap: () {
+                              NavigationService.goBack();
+                              NavigationService.navigateTo(
+                                navigationMethod: NavigationMethod.push,
+                                page: MembersScreen.id,
                                 isNamed: true,
                               );
                             },

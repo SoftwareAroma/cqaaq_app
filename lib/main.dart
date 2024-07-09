@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:adaptive_theme/adaptive_theme.dart';
+import 'package:cqaaq_app/index.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
-import 'package:cqaaq_app/index.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:form_builder_validators/localization/l10n.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -101,6 +101,8 @@ class MyApp extends StatelessWidget {
                     ReportScreen.id: (BuildContext context) => const ReportScreen(),
                     SettingsScreen.id: (BuildContext context) => const SettingsScreen(),
                     ProfileScreen.id: (BuildContext context) => const ProfileScreen(),
+                    WorkHistoryScreen.id: (BuildContext context) => const WorkHistoryScreen(),
+                    MembersScreen.id: (BuildContext context) => const MembersScreen(),
                     NewsUpdateScreen.id: (BuildContext context) => const NewsUpdateScreen(),
                     NewProfilePictureScreen.id: (BuildContext context) => const NewProfilePictureScreen(),
                   },

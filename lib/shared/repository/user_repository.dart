@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cqaaq_app/index.dart';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cqaaq_app/index.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 /// [FirebaseStorage] instance
@@ -174,7 +174,7 @@ class UserRepo {
         path: FirestorePaths.userDocument(user!.uid),
         builder: (Map<String, dynamic>? data, String? documentId) {
           if (data != null) {
-            logger.i("User data: $data");
+            // logger.i("User data: $data");
             return data;
           }
           return null;
@@ -202,7 +202,7 @@ class UserRepo {
             for (QueryDocumentSnapshot<Map<String, dynamic>> document in data) {
               Map<String, dynamic> dataObject = document.data();
               UserModel userModel = UserModel.fromJson(dataObject);
-              logger.i('User >>>> ::: ${userModel.toJson()}');
+              // logger.i('User >>>> ::: ${userModel.toJson()}');
               users.add(userModel);
             }
             return users;

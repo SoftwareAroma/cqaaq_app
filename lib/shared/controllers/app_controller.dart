@@ -1,6 +1,6 @@
+import 'package:cqaaq_app/index.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:cqaaq_app/index.dart';
 
 class AppController extends GetxController {
   static final AppController _instance = Get.find();
@@ -37,7 +37,7 @@ class AppController extends GetxController {
 
   fetchUsers() async {
     List<UserModel> users = await userRepo.getUsers();
-    logger.i("users >>> $users");
+    // logger.i("users >>> $users");
     updateUsers(users);
   }
 

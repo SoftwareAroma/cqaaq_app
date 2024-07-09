@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cqaaq_app/index.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:cqaaq_app/index.dart';
 
 /// [FirebaseFirestore] instance
 final FirebaseFirestore _userFirebaseFirestore = FirebaseFirestore.instance;
@@ -55,7 +55,7 @@ class UserController extends GetxController {
   Future<void> getUserProfile() async {
     try {
       final UserModel? userModel = await userRepo.getUserData();
-      logger.i("userModel: $userModel");
+      // logger.i("userModel: $userModel");
       if (userModel != null) {
         updateUser(userModel);
       }
@@ -78,6 +78,34 @@ class UserController extends GetxController {
       /// get user's data from firestore
       await _userFirebaseFirestore.collection(FirestorePaths.userImagesPath).doc(_auth.currentUser!.uid).update({
         'avatar': avatarUrl,
+      });
+      await getUserProfile();
+      return true;
+    } catch (e) {
+      logger.e("Error getting user data: $e");
+      return false;
+    }
+  }
+
+  // update about text
+  Future<bool> updateAbout(String about) async {
+    try {
+      await _userFirebaseFirestore.collection(FirestorePaths.usersCollection).doc(_auth.currentUser!.uid).update({
+        'about': about,
+      });
+      await getUserProfile();
+      return true;
+    } catch (e) {
+      logger.e("Error getting user data: $e");
+      return false;
+    }
+  }
+
+  // add a work history
+  Future<bool> addWorkHistory(WorkHistoryModel history) async {
+    try {
+      await _userFirebaseFirestore.collection(FirestorePaths.usersCollection).doc(_auth.currentUser!.uid).update({
+        'history': FieldValue.arrayUnion([history.toJson()]),
       });
       await getUserProfile();
       return true;

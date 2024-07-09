@@ -15,12 +15,16 @@ _$UserModelImpl _$$UserModelImplFromJson(Map<String, dynamic> json) =>
       region: json['region'] as String,
       reports:
           (json['reports'] as List<dynamic>).map((e) => e as String).toList(),
+      history: (json['history'] as List<dynamic>)
+          .map((e) => WorkHistoryModel.fromJson(e as Map<String, dynamic>))
+          .toList(),
       district: json['district'] as String?,
       position: json['position'] as String?,
       email: json['email'] as String?,
       phone: json['phone'] as String?,
       otherName: json['otherName'] as String?,
       avatar: json['avatar'] as String?,
+      about: json['about'] as String?,
     );
 
 Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
@@ -31,10 +35,12 @@ Map<String, dynamic> _$$UserModelImplToJson(_$UserModelImpl instance) =>
       'lastName': instance.lastName,
       'region': instance.region,
       'reports': instance.reports,
+      'history': instance.history,
       'district': instance.district,
       'position': instance.position,
       'email': instance.email,
       'phone': instance.phone,
       'otherName': instance.otherName,
       'avatar': instance.avatar,
+      'about': instance.about,
     };

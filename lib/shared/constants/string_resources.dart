@@ -25,8 +25,12 @@ class StringResource {
   static get profileText => 'Profile';
   static get newsUpdateText => 'News Updates';
   static get reportDetailText => 'Report Details';
-  static get notificationText => 'Notifications';
   static get settingsText => 'Settings';
+  static get notificationText => 'Notifications';
+  static get memberText => 'Member Profile';
+  static get membersText => 'All Members';
+  static get memText => 'Members';
+  static get workHistoryText => 'Work History';
   static get noInternetConnection => 'No Internet Connection';
   static get bioDataInfoTitle => 'Bio Data Information';
   static get bioDataInfoText => 'To make things effective with the reports and cases that you are likely to file, ';

@@ -17,13 +17,13 @@ class BioDataScreen extends StatefulWidget {
   final UserModel? user;
   final String? email;
   final String? phone;
-  final bool isEditting;
+  final bool isEditing;
   const BioDataScreen({
     super.key,
     this.user,
     this.email,
     this.phone,
-    this.isEditting = false,
+    this.isEditing = false,
   });
 
   @override
@@ -130,14 +130,14 @@ class _BioDataScreenState extends State<BioDataScreen> {
                     children: <Widget>[
                       FormBuilderTextField(
                         name: "email",
-                        enabled: widget.isEditting ? false : true,
+                        enabled: widget.isEditing ? false : true,
                         textInputAction: TextInputAction.next,
                         keyboardType: TextInputType.emailAddress,
                         decoration: InputDecoration(
                           labelText: "Email",
                           prefixIcon: Icon(
                             LineAwesomeIcons.envelope,
-                            color: widget.isEditting
+                            color: widget.isEditing
                                 ? Theme.of(context).colorScheme.onBackground.withOpacity(
                                       0.3,
                                     )
@@ -152,7 +152,7 @@ class _BioDataScreenState extends State<BioDataScreen> {
                           FormBuilderValidators.email(),
                         ]),
                       ),
-                      if ((!widget.isEditting) || (widget.email == null)) Gap(15.0.h),
+                      if ((!widget.isEditing) || (widget.email == null)) Gap(15.0.h),
                       FormBuilderTextField(
                         name: "uid",
                         textInputAction: TextInputAction.next,
@@ -424,12 +424,14 @@ class _BioDataScreenState extends State<BioDataScreen> {
       "lastName": lastName,
       "region": region,
       "reports": [],
+      "history": [],
       "district": district,
       "position": position,
       "email": auth.currentUser?.email ?? email,
       "phone": phoneNumber,
       "otherName": otherName ?? "",
       "avatar": defaultAvatarUrl,
+      "about": "",
     };
     showLoading(context);
     bool response = await userRepo.saveUserData(data);
@@ -453,7 +455,7 @@ class _BioDataScreenState extends State<BioDataScreen> {
 }
 
 String randomString({int length = 7}) {
-  // get the length of users fro appcontroller
+  // get the length of users fro appController
   int userLength = appController.users.length;
   const String chars = '1234567890';
   Random rnd = Random.secure();
@@ -467,7 +469,7 @@ String randomString({int length = 7}) {
   );
   String baseValue = '94321';
   String uniqueId = '';
-  // if userLenght is a single digit, add two zeros infrot of it, if its a double digit add one zero infront of it, else add the userLength
+  // if userLength is a single digit, add two zeros in front of it, if its a double digit add one zero in front of it, else add the userLength
   if (userLength < 10) {
     uniqueId = '00$userLength';
   } else if (userLength > 10 && userLength < 100) {

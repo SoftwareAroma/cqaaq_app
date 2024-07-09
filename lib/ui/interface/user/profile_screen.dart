@@ -1,11 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cqaaq_app/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:cqaaq_app/index.dart';
 import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -32,7 +32,7 @@ class _ProfileScreenState extends State<StatefulWidget> {
               navigationMethod: NavigationMethod.push,
               page: () => BioDataScreen(
                 user: userController.user,
-                isEditting: true,
+                isEditing: true,
               ),
               isNamed: false,
             );
@@ -51,6 +51,38 @@ class _ProfileScreenState extends State<StatefulWidget> {
             showCustomFlushBar(
               context: context,
               message: "This feature is not available at this time",
+            );
+          },
+        ),
+        ProfileOptionModel.arrow(
+          title: 'Work History',
+          icon: Icon(
+            LineAwesomeIcons.briefcase,
+            size: 20,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          titleColor: Theme.of(context).colorScheme.onBackground,
+          onClick: () {
+            NavigationService.navigateTo(
+              navigationMethod: NavigationMethod.push,
+              page: WorkHistoryScreen.id,
+              isNamed: true,
+            );
+          },
+        ),
+        ProfileOptionModel.arrow(
+          title: 'All Registered Members',
+          icon: Icon(
+            LineAwesomeIcons.users,
+            size: 20,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+          titleColor: Theme.of(context).colorScheme.onBackground,
+          onClick: () {
+            NavigationService.navigateTo(
+              navigationMethod: NavigationMethod.push,
+              page: MembersScreen.id,
+              isNamed: true,
             );
           },
         ),
@@ -129,6 +161,43 @@ class _ProfileScreenState extends State<StatefulWidget> {
           },
         ),
       ];
+
+  /// text editing controller for about text
+  final TextEditingController _aboutController = TextEditingController();
+  bool _isEditing = false;
+
+  @override
+  void initState() {
+    _isEditing = false;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _isEditing = false;
+    super.dispose();
+  }
+
+  _onEditingCompleted() async {
+    FocusScope.of(context).unfocus();
+    bool isDone = await userController.updateAbout(_aboutController.text);
+    if (!mounted) return;
+    if (isDone) {
+      showCustomFlushBar(
+        context: context,
+        message: "About updated successfully",
+      );
+    } else {
+      showCustomFlushBar(
+        context: context,
+        message: "Error updating about",
+      );
+    }
+    setState(() {
+      _isEditing = false;
+    });
+    userController.getUserProfile();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -276,6 +345,112 @@ class _ProfileScreenState extends State<StatefulWidget> {
                                   color: Theme.of(context).colorScheme.onBackground,
                                 ),
                               ],
+                            ),
+                            Gap(10.0.h),
+                            Container(
+                              width: 150.0.w,
+                              color: Theme.of(context).colorScheme.primary,
+                              height: 1,
+                              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                            ),
+                            Gap(10.0.h),
+                            // about user text box that can be edited
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                              child: _isEditing
+                                  ? Column(
+                                      children: <Widget>[
+                                        TextFormField(
+                                          controller: _aboutController,
+                                          textAlign: TextAlign.justify,
+                                          keyboardType: TextInputType.multiline,
+                                          maxLines: 3,
+                                          textInputAction: TextInputAction.done,
+                                          onFieldSubmitted: (String value) => _onEditingCompleted(),
+                                          decoration: InputDecoration(
+                                            hintText: "About you",
+                                            hintStyle: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 10.0.sp,
+                                              color: Theme.of(context).colorScheme.onBackground,
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Theme.of(context).colorScheme.primary,
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Theme.of(context).colorScheme.primary,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Gap(8.0.h),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Expanded(
+                                              child: CustomButton(
+                                                title: "Save".toUpperCase(),
+                                                height: 20.0.h,
+                                                color: Theme.of(context).colorScheme.primary,
+                                                onPressed: () => _onEditingCompleted(),
+                                              ),
+                                            ),
+                                            Gap(15.0.w),
+                                            Expanded(
+                                              child: CustomButton(
+                                                title: "Cancel".toUpperCase(),
+                                                height: 20.0.h,
+                                                color: Theme.of(context).colorScheme.error,
+                                                onPressed: () {
+                                                  // clear the text field
+                                                  _aboutController.clear();
+                                                  setState(() {
+                                                    _isEditing = false;
+                                                  });
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    )
+                                  : Stack(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 30.0.w,
+                                            vertical: 10.0.h,
+                                          ),
+                                          child: AutoSizeText(
+                                            userController.user?.about ?? "Add a little about yourself",
+                                            style: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 12.0.sp,
+                                              color: Theme.of(context).colorScheme.onBackground,
+                                            ),
+                                          ),
+                                        ),
+                                        Positioned(
+                                          bottom: 0.0,
+                                          right: -5.0.w,
+                                          child: IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _isEditing = true;
+                                                _aboutController.text = userController.user?.about ?? "";
+                                              });
+                                            },
+                                            icon: Icon(
+                                              LineAwesomeIcons.edit,
+                                              color: Theme.of(context).colorScheme.primary,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                             ),
                             Gap(15.0.h),
                             Container(

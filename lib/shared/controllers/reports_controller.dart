@@ -1,5 +1,5 @@
-import 'package:get/get.dart';
 import 'package:cqaaq_app/index.dart';
+import 'package:get/get.dart';
 
 class ReportsController extends GetxController {
   static final ReportsController _instance = Get.find();
@@ -9,7 +9,7 @@ class ReportsController extends GetxController {
 
   fetchReports() async {
     List<ReportModel> reports = await reportRepo.getReports();
-    logger.i("reports >>> $reports");
+    // logger.i("reports >>> $reports");
     updateReports(reports);
   }
 

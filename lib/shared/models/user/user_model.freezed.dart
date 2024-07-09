@@ -26,12 +26,14 @@ mixin _$UserModel {
   String get lastName => throw _privateConstructorUsedError;
   String get region => throw _privateConstructorUsedError;
   List<String> get reports => throw _privateConstructorUsedError;
+  List<WorkHistoryModel> get history => throw _privateConstructorUsedError;
   String? get district => throw _privateConstructorUsedError;
   String? get position => throw _privateConstructorUsedError;
   String? get email => throw _privateConstructorUsedError;
   String? get phone => throw _privateConstructorUsedError;
   String? get otherName => throw _privateConstructorUsedError;
   String? get avatar => throw _privateConstructorUsedError;
+  String? get about => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,12 +53,14 @@ abstract class $UserModelCopyWith<$Res> {
       String lastName,
       String region,
       List<String> reports,
+      List<WorkHistoryModel> history,
       String? district,
       String? position,
       String? email,
       String? phone,
       String? otherName,
-      String? avatar});
+      String? avatar,
+      String? about});
 }
 
 /// @nodoc
@@ -78,12 +82,14 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? lastName = null,
     Object? region = null,
     Object? reports = null,
+    Object? history = null,
     Object? district = freezed,
     Object? position = freezed,
     Object? email = freezed,
     Object? phone = freezed,
     Object? otherName = freezed,
     Object? avatar = freezed,
+    Object? about = freezed,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -110,6 +116,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.reports
           : reports // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      history: null == history
+          ? _value.history
+          : history // ignore: cast_nullable_to_non_nullable
+              as List<WorkHistoryModel>,
       district: freezed == district
           ? _value.district
           : district // ignore: cast_nullable_to_non_nullable
@@ -134,6 +144,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as String?,
+      about: freezed == about
+          ? _value.about
+          : about // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -153,12 +167,14 @@ abstract class _$$UserModelImplCopyWith<$Res>
       String lastName,
       String region,
       List<String> reports,
+      List<WorkHistoryModel> history,
       String? district,
       String? position,
       String? email,
       String? phone,
       String? otherName,
-      String? avatar});
+      String? avatar,
+      String? about});
 }
 
 /// @nodoc
@@ -178,12 +194,14 @@ class __$$UserModelImplCopyWithImpl<$Res>
     Object? lastName = null,
     Object? region = null,
     Object? reports = null,
+    Object? history = null,
     Object? district = freezed,
     Object? position = freezed,
     Object? email = freezed,
     Object? phone = freezed,
     Object? otherName = freezed,
     Object? avatar = freezed,
+    Object? about = freezed,
   }) {
     return _then(_$UserModelImpl(
       uid: null == uid
@@ -210,6 +228,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value._reports
           : reports // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      history: null == history
+          ? _value._history
+          : history // ignore: cast_nullable_to_non_nullable
+              as List<WorkHistoryModel>,
       district: freezed == district
           ? _value.district
           : district // ignore: cast_nullable_to_non_nullable
@@ -234,6 +256,10 @@ class __$$UserModelImplCopyWithImpl<$Res>
           ? _value.avatar
           : avatar // ignore: cast_nullable_to_non_nullable
               as String?,
+      about: freezed == about
+          ? _value.about
+          : about // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -248,13 +274,16 @@ class _$UserModelImpl implements _UserModel {
       required this.lastName,
       required this.region,
       required final List<String> reports,
+      required final List<WorkHistoryModel> history,
       this.district,
       this.position,
       this.email,
       this.phone,
       this.otherName,
-      this.avatar})
-      : _reports = reports;
+      this.avatar,
+      this.about})
+      : _reports = reports,
+        _history = history;
 
   factory _$UserModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$UserModelImplFromJson(json);
@@ -277,6 +306,14 @@ class _$UserModelImpl implements _UserModel {
     return EqualUnmodifiableListView(_reports);
   }
 
+  final List<WorkHistoryModel> _history;
+  @override
+  List<WorkHistoryModel> get history {
+    if (_history is EqualUnmodifiableListView) return _history;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_history);
+  }
+
   @override
   final String? district;
   @override
@@ -289,10 +326,12 @@ class _$UserModelImpl implements _UserModel {
   final String? otherName;
   @override
   final String? avatar;
+  @override
+  final String? about;
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, id: $id, firstName: $firstName, lastName: $lastName, region: $region, reports: $reports, district: $district, position: $position, email: $email, phone: $phone, otherName: $otherName, avatar: $avatar)';
+    return 'UserModel(uid: $uid, id: $id, firstName: $firstName, lastName: $lastName, region: $region, reports: $reports, history: $history, district: $district, position: $position, email: $email, phone: $phone, otherName: $otherName, avatar: $avatar, about: $about)';
   }
 
   @override
@@ -308,6 +347,7 @@ class _$UserModelImpl implements _UserModel {
                 other.lastName == lastName) &&
             (identical(other.region, region) || other.region == region) &&
             const DeepCollectionEquality().equals(other._reports, _reports) &&
+            const DeepCollectionEquality().equals(other._history, _history) &&
             (identical(other.district, district) ||
                 other.district == district) &&
             (identical(other.position, position) ||
@@ -316,7 +356,8 @@ class _$UserModelImpl implements _UserModel {
             (identical(other.phone, phone) || other.phone == phone) &&
             (identical(other.otherName, otherName) ||
                 other.otherName == otherName) &&
-            (identical(other.avatar, avatar) || other.avatar == avatar));
+            (identical(other.avatar, avatar) || other.avatar == avatar) &&
+            (identical(other.about, about) || other.about == about));
   }
 
   @JsonKey(ignore: true)
@@ -329,12 +370,14 @@ class _$UserModelImpl implements _UserModel {
       lastName,
       region,
       const DeepCollectionEquality().hash(_reports),
+      const DeepCollectionEquality().hash(_history),
       district,
       position,
       email,
       phone,
       otherName,
-      avatar);
+      avatar,
+      about);
 
   @JsonKey(ignore: true)
   @override
@@ -358,12 +401,14 @@ abstract class _UserModel implements UserModel {
       required final String lastName,
       required final String region,
       required final List<String> reports,
+      required final List<WorkHistoryModel> history,
       final String? district,
       final String? position,
       final String? email,
       final String? phone,
       final String? otherName,
-      final String? avatar}) = _$UserModelImpl;
+      final String? avatar,
+      final String? about}) = _$UserModelImpl;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$UserModelImpl.fromJson;
@@ -381,6 +426,8 @@ abstract class _UserModel implements UserModel {
   @override
   List<String> get reports;
   @override
+  List<WorkHistoryModel> get history;
+  @override
   String? get district;
   @override
   String? get position;
@@ -392,6 +439,8 @@ abstract class _UserModel implements UserModel {
   String? get otherName;
   @override
   String? get avatar;
+  @override
+  String? get about;
   @override
   @JsonKey(ignore: true)
   _$$UserModelImplCopyWith<_$UserModelImpl> get copyWith =>
