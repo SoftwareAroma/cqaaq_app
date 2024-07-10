@@ -37,14 +37,13 @@ class AppController extends GetxController {
 
   fetchUsers() async {
     List<UserModel> users = await userRepo.getUsers();
-    // logger.i("users >>> $users");
+    // logger.i("users >>> ${users}");
     updateUsers(users);
   }
 
   UserModel? getUser(String id) {
     if (_users.isEmpty) return null;
     UserModel user = _users.firstWhere((UserModel user) => user.id == id);
-    // logger.i("Found user >>> $user");
     return user;
   }
 

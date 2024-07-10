@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   image: const AssetImage(Assets.imagesAuthBackground),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.95),
+                    Colors.black.withOpacity(0.98),
                     BlendMode.overlay,
                   ),
                 ),
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     lineHeight: 1.2,
                     textAlign: TextAlign.center,
                     maxLines: 3,
-                    fontWeight: FontWeight.w900,
+                    fontWeight: FontWeight.normal,
                     color: Theme.of(context).colorScheme.surface,
                   ),
                   _space,
@@ -127,10 +127,24 @@ class _HomeScreenState extends State<HomeScreen> {
 class ReportCard extends StatefulWidget {
   final ReportModel reportModel;
   final VoidCallback onTap;
+  final Color? backgroundColor;
+  final Color? foregroundColor;
+  final FontWeight? fontWeight;
+  final Color? iconColor;
+  final Color? iconBackgroundColor;
+  final Color? iconBorderColor;
+  final bool showReportedBy;
   const ReportCard({
     super.key,
     required this.reportModel,
     required this.onTap,
+    this.backgroundColor,
+    this.foregroundColor,
+    this.fontWeight,
+    this.iconColor,
+    this.iconBackgroundColor,
+    this.iconBorderColor,
+    this.showReportedBy = true,
   });
 
   @override
@@ -161,7 +175,7 @@ class _ReportCardState extends State<ReportCard> {
             vertical: 10.0.h,
           ),
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primaryContainer,
+            color: widget.backgroundColor ?? Theme.of(context).colorScheme.primaryContainer,
             borderRadius: BorderRadius.circular(0.0.r),
             boxShadow: <BoxShadow>[
               BoxShadow(
@@ -178,16 +192,16 @@ class _ReportCardState extends State<ReportCard> {
               Container(
                 padding: EdgeInsets.all(10.0.r),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: widget.iconBackgroundColor ?? Theme.of(context).colorScheme.primary,
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: Theme.of(context).colorScheme.onPrimary,
+                    color: widget.iconBorderColor ?? Theme.of(context).colorScheme.onPrimary,
                     width: 2.0.w,
                   ),
                 ),
                 child: Icon(
                   FontAwesomeIcons.newspaper,
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: widget.iconColor ?? Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
               _space,
@@ -199,27 +213,28 @@ class _ReportCardState extends State<ReportCard> {
                     CustomText(
                       widget.reportModel.site.toTitleCase(),
                       fontSize: 16.0.sp,
-                      fontWeight: FontWeight.w600,
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      fontWeight: widget.fontWeight ?? FontWeight.w600,
+                      color: widget.foregroundColor ?? Theme.of(context).colorScheme.onPrimaryContainer,
                     ),
                     Gap(2.0.h),
                     Row(
                       children: <Widget>[
-                        CustomText(
-                          "Reported by: ".toUpperCase(),
-                          fontSize: 12.0.sp,
-                          fontWeight: FontWeight.w900,
-                          letterSpacing: 1.0,
-                          color: Theme.of(context).colorScheme.onPrimaryContainer,
-                        ),
-                        Gap(2.0.w),
+                        if (widget.showReportedBy)
+                          CustomText(
+                            "Reported by: ".toUpperCase(),
+                            fontSize: 12.0.sp,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 1.0,
+                            color: widget.foregroundColor ?? Theme.of(context).colorScheme.onPrimaryContainer,
+                          ),
+                        if (widget.showReportedBy) Gap(2.0.w),
                         Expanded(
                           child: ClipRRect(
                             child: CustomText(
                               appController.getUser(widget.reportModel.reporterId)?.firstName.toTitleCase() ??
                                   widget.reportModel.reporterUid,
                               fontSize: 12.0.sp,
-                              color: Theme.of(context).colorScheme.onPrimaryContainer,
+                              color: widget.foregroundColor ?? Theme.of(context).colorScheme.onPrimaryContainer,
                             ),
                           ),
                         ),

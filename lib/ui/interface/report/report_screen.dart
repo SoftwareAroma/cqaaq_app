@@ -37,7 +37,7 @@ class _ReportScreenState extends State<ReportScreen> {
   final List<ReportRow> _reportRows = <ReportRow>[
     ReportRow(column1: 'NUT VOID', column2: '', column3: '', column4: ''),
     ReportRow(column1: 'NUT SPOTTED', column2: '', column3: '', column4: ''),
-    ReportRow(column1: 'NUT IMATURE', column2: '', column3: '', column4: ''),
+    ReportRow(column1: 'NUT IMMATURE', column2: '', column3: '', column4: ''),
     ReportRow(column1: 'NUT OIL SEEDS', column2: '', column3: '', column4: ''),
     ReportRow(column1: 'NUT DISEASED', column2: '', column3: '', column4: ''),
     ReportRow(column1: 'TOTAL NUTS WITH DEFECTS', column2: 'T1', column3: '', column4: ''),
@@ -79,12 +79,12 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var imature = _reportDataSource.dataGridRows[2].getCells().toList()[3].value;
+    var immature = _reportDataSource.dataGridRows[2].getCells().toList()[3].value;
     var spotted = _reportDataSource.dataGridRows[1].getCells().toList()[3].value;
     var goodKernel = _reportDataSource.dataGridRows[10].getCells().toList()[3].value;
-    // logger.e("imature => $imature $spotted $goodKernel");
+    // logger.e("immature => immature $spotted $goodKernel");
     double res = calculateKor(
-      immature: double.tryParse(imature) ?? 0,
+      immature: double.tryParse(immature) ?? 0,
       spotted: double.tryParse(spotted) ?? 0,
       goodKernel: double.tryParse(goodKernel) ?? 0,
     );

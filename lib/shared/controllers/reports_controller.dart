@@ -36,6 +36,11 @@ class ReportsController extends GetxController {
     }
   }
 
+  // get report with id
+  ReportModel getReportById(String id) {
+    return _reports.firstWhere((ReportModel report) => report.id == id);
+  }
+
   clearReports() {
     _reports.clear();
     update();

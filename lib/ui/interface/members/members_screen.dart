@@ -24,9 +24,11 @@ class _MembersScreenState extends State<MembersScreen> {
     isLoading = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(seconds: 5), () {
-        setState(() {
-          isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            isLoading = false;
+          });
+        }
       });
     });
     super.initState();
@@ -87,25 +89,29 @@ class _MembersScreenState extends State<MembersScreen> {
                 ),
               Expanded(
                 child: ListView.separated(
-                  itemBuilder: (context, index) {
+                  itemBuilder: (BuildContext context, int index) {
                     UserModel user = appController.users[index];
-                    return UserTile(
-                      user: user,
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (BuildContext context) => MemberDetailScreen(user: user)),
-                        );
-                      },
-                    );
+                    return isLoading
+                        ? LoadingSkeleton(isEnabled: isLoading)
+                        : UserTile(
+                            user: user,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) => MemberDetailScreen(user: user),
+                                ),
+                              );
+                            },
+                          );
                   },
-                  separatorBuilder: (context, index) => Column(
-                    children: [
+                  separatorBuilder: (BuildContext context, int index) => Column(
+                    children: <Widget>[
                       _space,
                       const BrandDivider(),
                     ],
                   ),
-                  itemCount: userController.user?.history.length ?? 0,
+                  itemCount: appController.users.length,
                 ),
               ),
 

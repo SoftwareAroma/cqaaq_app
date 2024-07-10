@@ -25,9 +25,11 @@ class _WorkHistoryScreenState extends State<WorkHistoryScreen> {
     isLoading = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(seconds: 5), () {
-        setState(() {
-          isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            isLoading = false;
+          });
+        }
       });
     });
     super.initState();
